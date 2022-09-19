@@ -1,0 +1,18 @@
+{
+    "name": "jorge/reabastecimento-do-cartao",
+    "description": "Programa que avisa quando o passe escolar vai acabar",
+    "autoload": {
+        "psr-4": {
+            "Jorge\\ReabastecimentoDoCartao\\": "mvc/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Jorge-Calheiros-de-Sousa",
+            "email": "jorgecalheiros.s@gmail.com"
+        }
+    ],
+    "require": {
+        "vlucas/phpdotenv": "^5.4"
+    }
+}
