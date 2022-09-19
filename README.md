@@ -43,3 +43,7 @@ Api que gerencia as viagens e recargas do passe escolar apenas usando PHP.
 |docker-compose stop     | para o container        |
 |docker ps    |mostra todos os containers executados no momento         |
 
+
+## Documentação da Api
+
+Acesse [Documentação da Api ](https://github.com/Jorge-Calheiros-de-Sousa/documentacao-api-gerenciadora-passe-escolar)
