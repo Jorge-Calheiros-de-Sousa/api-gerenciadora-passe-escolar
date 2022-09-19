@@ -31,7 +31,7 @@ Api que gerencia as viagens e recargas do passe escolar apenas usando PHP.
 |Porta  |Descrição  |
 |---------|---------|
 |8001    |aplicação(http)      |
-|8000     |phpmyadmin         |
+|8002     |phpmyadmin         |
 
 
 ## Comandos do docker
