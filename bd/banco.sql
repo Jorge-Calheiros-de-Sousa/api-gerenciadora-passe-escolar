@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Tempo de geração: 17/09/2022 às 22:03
+-- Tempo de geração: 25/09/2022 às 19:15
 -- Versão do servidor: 8.0.30
 -- Versão do PHP: 8.0.19
 
@@ -46,7 +46,7 @@ CREATE TABLE `logs` (
   `credito` double NOT NULL,
   `recarga` int DEFAULT NULL,
   `viagem` int DEFAULT NULL,
-  `data` date NOT NULL
+  `data` timestamp NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -58,6 +58,7 @@ CREATE TABLE `logs` (
 CREATE TABLE `onibus` (
   `id` int NOT NULL,
   `nome` varchar(100) NOT NULL,
+  `cartao` int NOT NULL,
   `conducao` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -71,7 +72,7 @@ CREATE TABLE `recargas` (
   `id` int NOT NULL,
   `total` double NOT NULL,
   `cartao` int NOT NULL,
-  `data` date NOT NULL
+  `data` timestamp NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -84,7 +85,7 @@ CREATE TABLE `viagens` (
   `id` int NOT NULL,
   `cartao` int NOT NULL,
   `onibus` int NOT NULL,
-  `data` date NOT NULL
+  `data` timestamp NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
@@ -109,7 +110,8 @@ ALTER TABLE `logs`
 -- Índices de tabela `onibus`
 --
 ALTER TABLE `onibus`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `Cartao_Onibus` (`cartao`);
 
 --
 -- Índices de tabela `recargas`
@@ -134,31 +136,31 @@ ALTER TABLE `viagens`
 -- AUTO_INCREMENT de tabela `cartoes`
 --
 ALTER TABLE `cartoes`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de tabela `logs`
 --
 ALTER TABLE `logs`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de tabela `onibus`
 --
 ALTER TABLE `onibus`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de tabela `recargas`
 --
 ALTER TABLE `recargas`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de tabela `viagens`
 --
 ALTER TABLE `viagens`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Restrições para tabelas despejadas
@@ -170,6 +172,12 @@ ALTER TABLE `viagens`
 ALTER TABLE `logs`
   ADD CONSTRAINT `Recarga` FOREIGN KEY (`recarga`) REFERENCES `recargas` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   ADD CONSTRAINT `Viagens` FOREIGN KEY (`viagem`) REFERENCES `viagens` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+--
+-- Restrições para tabelas `onibus`
+--
+ALTER TABLE `onibus`
+  ADD CONSTRAINT `Cartao_Onibus` FOREIGN KEY (`cartao`) REFERENCES `cartoes` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
 -- Restrições para tabelas `recargas`

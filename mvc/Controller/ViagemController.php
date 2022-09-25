@@ -29,7 +29,8 @@ class ViagemController extends BaseController
     public function index()
     {
         try {
-            $this->model->setId($this->get('id'));
+            $this->model->setId($this->get('id'))
+                ->setCartao($this->get('ID_CARTAO'));
             if ($list = $this->model->list()) {
                 $this->jsonResponse($list->fetchAll(\PDO::FETCH_ASSOC));
             }
@@ -48,7 +49,7 @@ class ViagemController extends BaseController
             $data = json_decode($json, TRUE);
 
             $creditoAtual = $this->modelCartao->setId($data['cartao'])->list()->fetch(\PDO::FETCH_ASSOC)["credito"];
-            $conducao = $this->modelOnibus->setId($data['onibus'])->list()->fetch(\PDO::FETCH_ASSOC)["conducao"];
+            $conducao = $this->modelOnibus->setId($data['onibus'])->setCartao(null)->list()->fetch(\PDO::FETCH_ASSOC)["conducao"];
             $novoCredito = $creditoAtual - ($conducao / 2);
 
             $this->modelCartao->setId($data['cartao'])->setCredito($novoCredito);

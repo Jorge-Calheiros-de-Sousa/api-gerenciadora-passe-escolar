@@ -5,14 +5,17 @@ namespace Jorge\ReabastecimentoDoCartao\Controller;
 use Exception;
 use Jorge\ReabastecimentoDoCartao\Model\CartaoModel;
 use Jorge\ReabastecimentoDoCartao\Model\LogModel;
+use Jorge\ReabastecimentoDoCartao\Model\OnibusModel;
 
 class CartaoController extends BaseController
 {
     private $model;
+    private $modelOnibus;
 
     function __construct()
     {
         $this->model = new CartaoModel;
+        $this->modelOnibus = new OnibusModel;
     }
 
     /**
@@ -21,9 +24,21 @@ class CartaoController extends BaseController
     public function index()
     {
         try {
+            $listCartoes = [];
             $this->model->setId($this->get('ID'));
+
             if ($list = $this->model->list()) {
-                $this->jsonResponse($list->fetchAll(\PDO::FETCH_ASSOC));
+
+                foreach ($list->fetchAll(\PDO::FETCH_ASSOC) as $item) {
+                    $id = $item["id"];
+                    $listOnibus = $this->modelOnibus->setId(null)->setCartao($id)->list()->fetchAll(\PDO::FETCH_ASSOC);
+                    $item["onibus"] = [];
+                    foreach ($listOnibus as $oni) {
+                        $item['onibus'][] = $oni;
+                    }
+                    $listCartoes[] = $item;
+                }
+                return $this->jsonResponse($listCartoes);
             }
         } catch (\Throwable $th) {
             $this->jsonResponse($th->getMessage(), self::STATUS_ERROR);

@@ -7,10 +7,12 @@ namespace Jorge\ReabastecimentoDoCartao\Model;
 class ViagemModel extends BaseModel
 {
     private ?int $id;
-    private int $cartao;
+    private ?int $cartao;
     private int $onibus;
     private string $data;
     public const NAME_TABLE = 'viagens';
+    public const NAME_TABLE_ASSOSIATE = 'onibus';
+    public const NAME_TABLE_ASSOSIATE2 = 'cartoes';
 
     public function setId($id)
     {
@@ -23,7 +25,7 @@ class ViagemModel extends BaseModel
         return $this->id;
     }
 
-    public function setCartao(int $cartao)
+    public function setCartao($cartao)
     {
         $this->cartao = $cartao;
         return $this;
@@ -63,10 +65,19 @@ class ViagemModel extends BaseModel
     public function list()
     {
         $pdo = $this->returnConnection();
+        $nameTable = self::NAME_TABLE;
+        $nameTableAssociate = self::NAME_TABLE_ASSOSIATE;
+        $nameTableAssociate2 = self::NAME_TABLE_ASSOSIATE2;
 
+        $attributes = "$nameTable.id, $nameTableAssociate2.partida, $nameTableAssociate2.destino, $nameTableAssociate.conducao, $nameTable.data";
         $where = $this->id ? ' where id=' . $this->id : '';
+        $whereCartao = $this->cartao ? ($where ? 'AND ' : '') . " WHERE $nameTableAssociate2.id = $this->cartao" : "";
 
-        $sql = $pdo->prepare("SELECT * FROM " . self::NAME_TABLE . $where);
+        $sql = $pdo->prepare("SELECT $attributes FROM $nameTable
+        INNER JOIN $nameTableAssociate ON $nameTable.onibus = $nameTableAssociate.id
+        INNER JOIN $nameTableAssociate2 ON $nameTable.cartao = $nameTableAssociate2.id
+        "
+            . $where . $whereCartao);
 
         return ($sql->execute() ? $sql : false);
     }

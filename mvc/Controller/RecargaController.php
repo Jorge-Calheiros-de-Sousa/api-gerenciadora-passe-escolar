@@ -26,7 +26,9 @@ class RecargaController extends BaseController
     public function index()
     {
         try {
-            $this->model->setId($this->get('ID'));
+            $this->model->setId($this->get('ID'))
+                ->setCartao($this->get('ID_CARTAO'));
+
             if ($list = $this->model->list()) {
                 $this->jsonResponse($list->fetchAll(\PDO::FETCH_ASSOC));
             }

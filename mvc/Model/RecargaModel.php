@@ -6,10 +6,11 @@ namespace Jorge\ReabastecimentoDoCartao\Model;
 class RecargaModel extends BaseModel
 {
     private ?int $id;
-    private int $cartao;
+    private ?int $cartao;
     private float $total;
     private string $data;
     public const NAME_TABLE = 'recargas';
+    public const NAME_TABLE_ASSOCIATE = 'cartoes';
 
     public function setTotal(float $total)
     {
@@ -34,7 +35,7 @@ class RecargaModel extends BaseModel
         return $this->id;
     }
 
-    public function setCartao(int $cartao)
+    public function setCartao($cartao)
     {
         $this->cartao = $cartao;
         return $this;
@@ -62,10 +63,15 @@ class RecargaModel extends BaseModel
     public function list()
     {
         $pdo = $this->returnConnection();
+        $nameTable = self::NAME_TABLE;
+        $nameTableAssociate = self::NAME_TABLE_ASSOCIATE;
+        $attributes = "$nameTable.id ,$nameTableAssociate.partida, $nameTableAssociate.destino, $nameTable.total, $nameTable.data";
 
-        $where = $this->id ? ' where id=' . $this->id : '';
+        $where = $this->id ? " where $nameTable.id=" . $this->id : '';
+        $whereCartao = $this->cartao ? ($where ? "AND " : "") . " WHERE $nameTableAssociate.id = $this->cartao" : "";
 
-        $sql = $pdo->prepare("SELECT * FROM " . self::NAME_TABLE . $where);
+        $sql = $pdo->prepare("SELECT $attributes FROM $nameTable 
+        INNER JOIN $nameTableAssociate ON $nameTable.cartao = $nameTableAssociate.id " . $where . $whereCartao);
 
         return ($sql->execute() ? $sql : false);
     }

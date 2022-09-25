@@ -22,6 +22,8 @@ class OnibusController extends BaseController
     {
         try {
             $this->model->setId($this->get('ID'));
+            $this->model->setCartao($this->get('ID_CARTAO'));
+
             if ($list = $this->model->list()) {
                 $this->jsonResponse($list->fetchAll(\PDO::FETCH_ASSOC));
             }
@@ -41,6 +43,7 @@ class OnibusController extends BaseController
 
             $this->model
                 ->setNome($data['nome'])
+                ->setCartao($data['cartao'])
                 ->setConducao($data['conducao']);
 
             if ($created = $this->model->insert()) {
@@ -64,6 +67,7 @@ class OnibusController extends BaseController
                 $this->model
                     ->setId($id)
                     ->setNome($data['nome'])
+                    ->setCartao($data['cartao'])
                     ->setConducao($data['conducao']);
 
                 if ($updated = $this->model->update()) {
