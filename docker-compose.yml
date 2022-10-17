@@ -2,7 +2,7 @@ version: "3"
 services:
   www:
     build: .
-    container_name: app_www
+    container_name: app_www_rb
     ports:
       - "8001:80"
     volumes:
@@ -15,7 +15,7 @@ services:
       - db
   db:
     image: mysql
-    container_name: app_db
+    container_name: app_db_rb
     ports:
       - "3306:3306"
     environment:
@@ -27,7 +27,7 @@ services:
       - default
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
-    container_name: app_phpmyadmin
+    container_name: app_phpmyadmin_rb
     links:
       - db:db
     ports:

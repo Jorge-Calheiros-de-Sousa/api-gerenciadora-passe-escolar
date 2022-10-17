@@ -85,7 +85,13 @@ class CartaoModel extends BaseModel
         $sql->bindParam(':destino', $this->destino);
         $sql->bindParam(':credito', $this->credito);
 
-        return ($sql->execute() ? $sql : false);
+        if ($sql->execute()) {
+            $id = $pdo->lastInsertId();
+            $select = $pdo->prepare("SELECT * FROM $nameTable WHERE id=$id");
+            return ($select->execute() ? $select : false);
+        } else {
+            return false;
+        }
     }
 
     /**

@@ -9,7 +9,8 @@ class Routes
         '/api/cartao' => 'Jorge\\ReabastecimentoDoCartao\\Controller\\CartaoController',
         '/api/viagem' => 'Jorge\\ReabastecimentoDoCartao\\Controller\\ViagemController',
         '/api/recarga' => 'Jorge\\ReabastecimentoDoCartao\\Controller\\RecargaController',
-        '/api/onibus' => 'Jorge\\ReabastecimentoDoCartao\\Controller\\OnibusController'
+        '/api/onibus' => 'Jorge\\ReabastecimentoDoCartao\\Controller\\OnibusController',
+        //'/' => '/mvc/View/index.html'
         //'/api/info' => 'Jorge\\ReabastecimentoDoCartao\\Controller\\InfoController'
     ];
 

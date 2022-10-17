@@ -53,6 +53,7 @@ class CartaoController extends BaseController
         try {
             $json = file_get_contents('php://input');
             $data = json_decode($json, TRUE);
+
             $this->model
                 ->setPartida($data['partida'])
                 ->setDestino($data['destino'])
