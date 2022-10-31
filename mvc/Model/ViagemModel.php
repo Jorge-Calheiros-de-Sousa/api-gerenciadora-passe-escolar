@@ -69,7 +69,7 @@ class ViagemModel extends BaseModel
         $nameTableAssociate = self::NAME_TABLE_ASSOSIATE;
         $nameTableAssociate2 = self::NAME_TABLE_ASSOSIATE2;
 
-        $attributes = "$nameTable.id, $nameTableAssociate2.partida, $nameTableAssociate2.destino, $nameTableAssociate.conducao, $nameTable.data";
+        $attributes = "$nameTable.id, $nameTableAssociate.nome, $nameTableAssociate2.partida, $nameTableAssociate2.destino, $nameTableAssociate.conducao, $nameTable.data";
         $where = $this->id ? ' where id=' . $this->id : '';
         $whereCartao = $this->cartao ? ($where ? 'AND ' : '') . " WHERE $nameTableAssociate2.id = $this->cartao" : "";
 

@@ -70,7 +70,7 @@ class OnibusModel extends BaseModel
         $nameTable = self::NAME_TABLE;
         $where = $this->id ? " where $nameTable.id=" . $this->id : "";
         $whereCartao = $this->cartao ? ($where ? 'and' : '' . " where $nameTable.cartao = $this->cartao") : '';
-        $attributes = "$nameTable.id, $nameTable.nome, $nameTableAssociate.partida, $nameTableAssociate.destino, $nameTable.conducao";
+        $attributes = "$nameTable.id,cartao, $nameTable.nome, $nameTableAssociate.partida, $nameTableAssociate.destino, $nameTable.conducao";
 
         $sql = $pdo->prepare("SELECT $attributes FROM " . $nameTable . " INNER JOIN $nameTableAssociate ON $nameTable.cartao = $nameTableAssociate.id" . $where . $whereCartao);
 
@@ -98,10 +98,10 @@ class OnibusModel extends BaseModel
     {
         $pdo = $this->returnConnection();
         $nameTable = self::NAME_TABLE;
-        $sql = $pdo->prepare("UPDATE $nameTable SET `nome`=:nome,`cartao`=:onibus,`conducao`=:conducao WHERE id = :id");
+        $sql = $pdo->prepare("UPDATE $nameTable SET `nome`=:nome,`cartao`=:cartao,`conducao`=:conducao WHERE `id`=:id");
         $sql->bindParam(':id', $this->id);
         $sql->bindParam(':nome', $this->nome);
-        $sql->bindColumn(':cartao', $this->cartao);
+        $sql->bindParam(':cartao', $this->cartao);
         $sql->bindParam(':conducao', $this->conducao);
         return ($sql->execute() ? $sql : false);
     }
